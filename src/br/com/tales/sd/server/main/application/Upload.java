@@ -7,7 +7,9 @@ import br.com.tales.sd.server.main.signature.UploadService;
  */
 public class Upload implements UploadService,Runnable {
 
-//    private Upload(){}
+    public static boolean isRunning = false;
+
+    private Upload(){}
 
     public static Upload INSTANCE;
 
@@ -18,10 +20,17 @@ public class Upload implements UploadService,Runnable {
         return  INSTANCE;
     }
 
-
     public static void start(){
-        Thread t = new Thread(Upload.INSTANCE);
-        t.start();
+        if(isRunning != true){
+            Thread t = new Thread(Upload.INSTANCE);
+            isRunning = true;
+            t.start();
+        }
+
+    }
+
+    public static void stop(){
+
     }
 
     @Override
@@ -40,7 +49,10 @@ public class Upload implements UploadService,Runnable {
     }
 
     @Override
-    public String upload() {
+    public String upload(String obj) {
+        if(!isRunning){
+
+        }
         return null;
     }
 

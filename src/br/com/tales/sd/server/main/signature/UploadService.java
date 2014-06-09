@@ -11,7 +11,9 @@ import java.rmi.RemoteException;
 public interface UploadService extends Remote,Runnable {
     public String getName() throws RemoteException;
 
-    public String upload() throws RemoteException;
+    public String upload(String name) throws RemoteException;
+
+
 
 
 }

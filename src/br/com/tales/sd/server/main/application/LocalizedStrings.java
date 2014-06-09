@@ -20,12 +20,14 @@ public class LocalizedStrings {
     }
 
 
+    public static String space(){return  " ";}
+
     public static String newPort(){
         return "Nova porta:";
     }
 
     public static String running(){
-        return "Nova porta:";
+        return "Server running...";
     }
     public static String alreadyInUse(){
         return "Já estamos usando essa porta.";

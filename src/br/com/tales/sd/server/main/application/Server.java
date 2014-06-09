@@ -16,6 +16,8 @@ public class Server implements IServer, Runnable{
 
     private String host;
 
+    private boolean isRun = false;
+
     private Server(int port){
         changePort(port);
     }
@@ -49,39 +51,45 @@ public class Server implements IServer, Runnable{
     }
 
 
-    public void choice(int number){
-        switch (number){
-            case 1:
-                Upload.self().start();
-                break;
-            case 2:
-                System.out.println("DOWNLOAD");
-//                DownloadService.start();
-                break;
-        }
+    public void serviceManager(String number){
+        String[]  str = number.split(LocalizedStrings.space());
+
+//        if(str[0] == "put"){
+//            Upload.self().upload();
+//        }
+//        switch (number){
+//            case "put":
+//                Upload.self().start();
+//                break;
+//            case "get":
+//                System.out.println("DOWNLOAD");
+////                DownloadService.start();
+//                break;
+//        }
     }
 
     @Override
     public void run() {
-        System.out.println(LocalizedStrings.self().running());
+        System.out.println(LocalizedStrings.running());
         System.setProperty("java.security.policy", "policy.all");
         System.setSecurityManager(new RMISecurityManager());
+        System.out.println("Realize operacoes");
         while(true){
-            System.out.println(LocalizedStrings.self().whattYouDo());
-            System.out.println("1- Upload");
-            System.out.println("2- Download");
+
             Scanner sc = new Scanner(System.in);
 
             try{
-                int service = Integer.parseInt(sc.nextLine());
-                if(service != 1 && service != 2)
-                    System.out.println(LocalizedStrings.self().needANumber());
-                else
-                    choice(service);
+                String service = sc.nextLine();
+                serviceManager(service);
+//                if(service != 1 && service != 2)
+//                    System.out.println(LocalizedStrings.self().needANumber());
+//                else
 
             }catch (NumberFormatException e){
-                System.out.println(LocalizedStrings.self().needANumber());
+                System.out.println(LocalizedStrings.needANumber());
             }
         }
     }
+
+
 }

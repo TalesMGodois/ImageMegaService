@@ -40,6 +40,15 @@ public class LocalizedStrings {
     public static  String needANumber(){
         return "Código inválido, preciso que digite [1] ou [2],";
     }
+    public static  String put(){
+        return "put";
+    }
+    public static  String get(){
+        return "get";
+    }
+    public static  String serverNotRunning(){
+        return "Server not running";
+    }
 
 
 }

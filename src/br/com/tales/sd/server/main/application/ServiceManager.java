@@ -17,17 +17,15 @@ public class ServiceManager {
         return INSTANCE;
     }
 
-    public void Manager(String str){
+    public void manager(String str){
         String[]  strs = str.split(LocalizedStrings.space());
-        if(strs[0] == "put"){
-            //doUpload
-        }else if(strs[0] == "get"){
+        if(strs[0].equals(LocalizedStrings.put())){
+            Upload.self().upload(strs[1]);
+        }else if(strs[0].equals(LocalizedStrings.get())){
             //doDownload
         }else{
             System.out.println("Comando não reconhecido");;
         }
-
-
     }
 
 }

@@ -2,45 +2,20 @@ package br.com.tales.sd.server.main.application;
 
 import br.com.tales.sd.server.main.signature.UploadService;
 
+import java.nio.channels.AlreadyBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+
 /**
  * Created by tales on 28/05/14.
  */
-public class Upload implements UploadService,Runnable {
+public class Upload extends UnicastRemoteObject implements UploadService{
 
-    public static boolean isRunning = false;
+    private static final long serialVersionUID = -8550306338084922644L;
 
-    private Upload(){}
-
-    public static Upload INSTANCE;
-
-    public static Upload self(){
-        if(INSTANCE == null){
-            INSTANCE = new Upload();
-        }
-        return  INSTANCE;
-    }
-
-    public static void start(){
-        if(isRunning != true){
-            Thread t = new Thread(Upload.INSTANCE);
-            isRunning = true;
-            t.start();
-        }
-
-    }
-
-    public static void stop(){
-
-    }
-
-    @Override
-    public void run() {
-        System.out.println("Upload Service Running");
-        System.out.println("Digite o enderećo e o nome do arquivo a ser enviado");
-        int i = 0;
-        while(true){
-            System.out.println("Testando...");
-        }
+    public Upload() throws RemoteException, AlreadyBoundException{
+        super();
     }
 
     @Override
@@ -50,10 +25,13 @@ public class Upload implements UploadService,Runnable {
 
     @Override
     public String upload(String obj) {
-        if(!isRunning){
+        UploadSlave up = new UploadSlave(obj);
+        UploadSlave up2 = new UploadSlave(obj);
+        Thread t = new Thread(up);
+        Thread t2 = new Thread(up2);
+        t.start();
+        t2.start();
 
-        }
         return null;
     }
-
 }

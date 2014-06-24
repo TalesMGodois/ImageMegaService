@@ -4,7 +4,11 @@ import br.com.tales.sd.server.main.signature.DownloadService;
 import br.com.tales.sd.server.main.signature.UploadService;
 
 import javax.swing.*;
+import java.nio.channels.AlreadyBoundException;
 import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Scanner;
 
 /**
@@ -12,11 +16,13 @@ import java.util.Scanner;
  */
 public class Server implements IServer, Runnable{
 
-    private int port;
+    int port = 2014;
 
-    private String host;
+    private String host = "localhost";
 
     private boolean isRun = false;
+
+    private String name = "ImageService";
 
     private Server(int port){
         changePort(port);
@@ -50,44 +56,32 @@ public class Server implements IServer, Runnable{
 
     }
 
-
-    public void serviceManager(String number){
-        String[]  str = number.split(LocalizedStrings.space());
-
-//        if(str[0] == "put"){
-//            Upload.self().upload();
-//        }
-//        switch (number){
-//            case "put":
-//                Upload.self().start();
-//                break;
-//            case "get":
-//                System.out.println("DOWNLOAD");
-////                DownloadService.start();
-//                break;
-//        }
-    }
-
     @Override
     public void run() {
         System.out.println(LocalizedStrings.running());
-        System.setProperty("java.security.policy", "policy.all");
+
+        System.setProperty("java.rmi.server.hostname", host);
+        System.setProperty("java.security.policy", "java.policy");
+
         System.setSecurityManager(new RMISecurityManager());
+
+        try{
+            Registry r = LocateRegistry.createRegistry(port);
+            try {
+                r.bind(name,new Upload());
+            } catch (java.rmi.AlreadyBoundException e) {
+                e.printStackTrace();
+            }
+
+        }catch (RemoteException e){
+            e.printStackTrace();
+        }
         System.out.println("Realize operacoes");
         while(true){
 
             Scanner sc = new Scanner(System.in);
-
-            try{
-                String service = sc.nextLine();
-                serviceManager(service);
-//                if(service != 1 && service != 2)
-//                    System.out.println(LocalizedStrings.self().needANumber());
-//                else
-
-            }catch (NumberFormatException e){
-                System.out.println(LocalizedStrings.needANumber());
-            }
+            String service = sc.nextLine();
+            ServiceManager.self().manager(service);
         }
     }
 

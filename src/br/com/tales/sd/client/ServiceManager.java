@@ -1,4 +1,8 @@
-package br.com.tales.sd.server.main.application;
+package br.com.tales.sd.client;
+
+import br.com.tales.sd.server.main.application.LocalizedStrings;
+import br.com.tales.sd.server.main.application.Upload;
+import br.com.tales.sd.server.main.signature.UploadService;
 
 import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
@@ -11,7 +15,7 @@ import java.rmi.registry.Registry;
  */
 public class ServiceManager {
     String ip = "localhost";
-    int door = 2011;
+    int door = 2014;
     String name = "ImageService";
 
 
@@ -31,7 +35,7 @@ public class ServiceManager {
         System.setProperty("java.security.policy", "java.policy");
         System.setSecurityManager(new RMISecurityManager());
         Registry r = LocateRegistry.getRegistry(ip,door);
-        Upload up = (Upload) r.lookup(name);
+        UploadService up = (UploadService) r.lookup(name);
 
         String[]  strs = str.split(LocalizedStrings.space());
         if(strs[0].equals(LocalizedStrings.put())){

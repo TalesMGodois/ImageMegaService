@@ -20,7 +20,8 @@ public class ServiceManager {
     public void manager(String str){
         String[]  strs = str.split(LocalizedStrings.space());
         if(strs[0].equals(LocalizedStrings.put())){
-            Upload.self().upload(strs[1]);
+            //doUpload
+//            Upload.self().upload(strs[1]);
         }else if(strs[0].equals(LocalizedStrings.get())){
             //doDownload
         }else{

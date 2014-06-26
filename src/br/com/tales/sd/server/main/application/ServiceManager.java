@@ -31,10 +31,11 @@ public class ServiceManager {
         System.setProperty("java.security.policy", "java.policy");
         System.setSecurityManager(new RMISecurityManager());
         Registry r = LocateRegistry.getRegistry(ip,door);
-        Upload calc = (Upload) r.lookup(name);
+        Upload up = (Upload) r.lookup(name);
 
         String[]  strs = str.split(LocalizedStrings.space());
         if(strs[0].equals(LocalizedStrings.put())){
+            up.make("POOOORRA");
             //doUpload
 //            Upload.self().upload(strs[1]);
         }else if(strs[0].equals(LocalizedStrings.get())){

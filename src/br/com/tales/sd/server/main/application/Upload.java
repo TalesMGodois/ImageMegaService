@@ -23,14 +23,16 @@ public class Upload extends UnicastRemoteObject implements UploadService{
     }
 
     @Override
-    public String make(String obj) {
-        UploadSlave up = new UploadSlave(obj);
-        UploadSlave up2 = new UploadSlave(obj);
-        Thread t = new Thread(up);
-        Thread t2 = new Thread(up2);
-        t.start();
-        t2.start();
+    public String make(String it) {
+        System.out.println("Mostrando uso do : " + it);
 
-        return null;
+//        UploadSlave up = new UploadSlave(obj);
+//        UploadSlave up2 = new UploadSlave(obj);
+//        Thread t = new Thread(up);
+//        Thread t2 = new Thread(up2);
+//        t.start();
+//        t2.start();
+
+        return it;
     }
 }

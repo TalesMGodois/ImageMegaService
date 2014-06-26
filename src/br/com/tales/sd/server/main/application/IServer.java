@@ -6,7 +6,8 @@ package br.com.tales.sd.server.main.application;
 public interface IServer {
 
 
-    public void start();
+    public void init();
+    public void start() throws Exception;
 
     public  void close();
 

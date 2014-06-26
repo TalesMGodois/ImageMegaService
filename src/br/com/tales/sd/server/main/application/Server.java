@@ -16,17 +16,20 @@ import java.util.Scanner;
  */
 public class Server implements IServer, Runnable{
 
-    int port = 2014;
+    int door = 2014;
 
-    private String host = "localhost";
+    private String ip = "localhost";
 
     private boolean isRun = false;
 
     private String name = "ImageService";
 
+
     private Server(int port){
         changePort(port);
     }
+
+/* My Singleton */
     private Server(){}
 
 
@@ -35,55 +38,69 @@ public class Server implements IServer, Runnable{
     public static Server self(){
         return INSTANCE;
     }
+/*My Singelton */
 
+    //Metodo para alterar porta em que o servidor está rodando
     public  void changePort(int port) {
-        if(port != this.port){
-            this.port = port;
-            System.out.println(LocalizedStrings.self().newPort()+this.port);
+        if(port != this.door){
+            this.door = port;
+            System.out.println(LocalizedStrings.self().newPort()+this.door);
         }else{
             System.out.println(LocalizedStrings.self().alreadyInUse());
         }
     }
 
+
+    //Inicia o servidor
     @Override
-    public void start() {
+    public void init() {
         Thread t = new Thread(Server.INSTANCE);
         t.start();
     }
 
     @Override
-    public void close() {
-
-    }
-
-    @Override
-    public void run() {
+    public void start() throws Exception {
         System.out.println(LocalizedStrings.running());
 
-        System.setProperty("java.rmi.server.hostname", host);
+        System.setProperty("java.rmi.server.hostname", ip);
         System.setProperty("java.security.policy", "java.policy");
 
         System.setSecurityManager(new RMISecurityManager());
 
-        try{
-            Registry r = LocateRegistry.createRegistry(port);
-            try {
-                r.bind(name,new Upload());
-            } catch (java.rmi.AlreadyBoundException e) {
-                e.printStackTrace();
-            }
+        Registry r = LocateRegistry.createRegistry(door);
 
-        }catch (RemoteException e){
-            e.printStackTrace();
-        }
-        System.out.println("Realize operacoes");
-        while(true){
+        r.bind(name,new Upload());
 
-            Scanner sc = new Scanner(System.in);
-            String service = sc.nextLine();
-            ServiceManager.self().manager(service);
+        System.out.println("Servidor iniciado...");
+
+        Object lock = new Object();
+        synchronized (lock) {
+            lock.wait();
         }
+
+//        while(true){
+//
+//            Scanner sc = new Scanner(System.in);
+//            String service = sc.nextLine();
+////            ServiceManager.self().manager(service);
+//        }
     }
 
+    //Mata o Servidor
+    @Override
+    public void close() {
+
+    }
+    //o Proprio server
+    @Override
+    public void run()  {
+        try{
+            start();
+        }catch (Exception e){
+            System.out.println("Não foi possível iniciar ser server");
+            e.printStackTrace();
+        }
+
+    }
 
 }

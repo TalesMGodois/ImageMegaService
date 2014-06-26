@@ -4,7 +4,6 @@ import br.com.tales.sd.server.main.signature.UploadService;
 
 import java.nio.channels.AlreadyBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
@@ -24,7 +23,7 @@ public class Upload extends UnicastRemoteObject implements UploadService{
     }
 
     @Override
-    public String upload(String obj) {
+    public String make(String obj) {
         UploadSlave up = new UploadSlave(obj);
         UploadSlave up2 = new UploadSlave(obj);
         Thread t = new Thread(up);

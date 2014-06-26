@@ -1,9 +1,19 @@
 package br.com.tales.sd.server.main.application;
 
+import java.rmi.NotBoundException;
+import java.rmi.RMISecurityManager;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
 /**
  * Created by tales on 08/06/14.
  */
 public class ServiceManager {
+    String ip = "localhost";
+    int door = 2011;
+    String name = "ImageService";
+
 
     private ServiceManager() {
     }
@@ -17,7 +27,12 @@ public class ServiceManager {
         return INSTANCE;
     }
 
-    public void manager(String str){
+    public void manager(String str) throws RemoteException,NotBoundException {
+        System.setProperty("java.security.policy", "java.policy");
+        System.setSecurityManager(new RMISecurityManager());
+        Registry r = LocateRegistry.getRegistry(ip,door);
+        Upload calc = (Upload) r.lookup(name);
+
         String[]  strs = str.split(LocalizedStrings.space());
         if(strs[0].equals(LocalizedStrings.put())){
             //doUpload

@@ -1,9 +1,6 @@
 package br.com.tales.sd.client;
 
-import br.com.tales.sd.server.main.application.ServiceManager;
-
 import java.rmi.NotBoundException;
-import java.rmi.RMISecurityManager;
 
 import java.rmi.RemoteException;
 import java.util.Scanner;

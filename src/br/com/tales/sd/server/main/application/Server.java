@@ -77,13 +77,6 @@ public class Server implements IServer, Runnable{
         synchronized (lock) {
             lock.wait();
         }
-
-//        while(true){
-//
-//            Scanner sc = new Scanner(System.in);
-//            String service = sc.nextLine();
-////            ServiceManager.self().manager(service);
-//        }
     }
 
     //Mata o Servidor
@@ -97,7 +90,7 @@ public class Server implements IServer, Runnable{
         try{
             start();
         }catch (Exception e){
-            System.out.println("Não foi possível iniciar ser server");
+            System.out.println("Não foi possível iniciar o server");
             e.printStackTrace();
         }
 

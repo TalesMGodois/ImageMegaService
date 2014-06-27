@@ -1,7 +1,9 @@
 package br.com.tales.sd.client;
 
+import br.com.tales.sd.server.main.application.Download;
 import br.com.tales.sd.server.main.application.LocalizedStrings;
 import br.com.tales.sd.server.main.application.Upload;
+import br.com.tales.sd.server.main.signature.DownloadService;
 import br.com.tales.sd.server.main.signature.UploadService;
 
 import java.rmi.NotBoundException;
@@ -35,14 +37,17 @@ public class ServiceManager {
         System.setProperty("java.security.policy", "java.policy");
         System.setSecurityManager(new RMISecurityManager());
         Registry r = LocateRegistry.getRegistry(ip,door);
-        UploadService up = (UploadService) r.lookup(name);
+
 
         String[]  strs = str.split(LocalizedStrings.space());
         if(strs[0].equals(LocalizedStrings.put())){
-            up.make("POOOORRA");
+            UploadService up = (UploadService) r.lookup(name);
+            up.make(strs[1]);
             //doUpload
 //            Upload.self().upload(strs[1]);
         }else if(strs[0].equals(LocalizedStrings.get())){
+            DownloadService down = (DownloadService) r.lookup(name);
+            down.make(strs[1]);
             //doDownload
         }else{
             System.out.println("Comando não reconhecido");;

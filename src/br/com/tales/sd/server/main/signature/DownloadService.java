@@ -6,9 +6,11 @@ import java.rmi.RemoteException;
 /**
  * Created by tales on 28/05/14.
  */
-public interface DownloadService extends Remote,Runnable {
+public interface DownloadService extends Remote {
     public String getName() throws RemoteException;
 
     public byte[] getImage() throws RemoteException;
+
+    public void make(String str);
 
 }

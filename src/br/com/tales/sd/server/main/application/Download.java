@@ -2,27 +2,17 @@ package br.com.tales.sd.server.main.application;
 
 import br.com.tales.sd.server.main.signature.DownloadService;
 
+import java.nio.channels.AlreadyBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Created by tales on 28/05/14.
  */
-public class Download implements DownloadService, Runnable{
-    private Download(){}
+public class Download extends UnicastRemoteObject implements DownloadService{
 
-    public static Download INSTANCE;
-
-    public static Download self(){
-        if(INSTANCE == null){
-            INSTANCE = new Download();
-        }
-        return  INSTANCE;
-    }
-
-
-    public static void start(){
-        Thread t = new Thread(Download.INSTANCE);
-        t.start();
+    public Download() throws RemoteException, AlreadyBoundException {
+        super();
     }
 
     @Override
@@ -36,7 +26,7 @@ public class Download implements DownloadService, Runnable{
     }
 
     @Override
-    public void run() {
-
+    public void make(String str) {
+        System.out.println("QUero Baixar:  "+ str);
     }
 }

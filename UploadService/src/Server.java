@@ -65,7 +65,7 @@ public class Server implements  Runnable{
 
         r.bind(name,new Upload());
 
-        System.out.println("Servidor iniciado...");
+        System.out.println("Servidor greg iniciado...");
 
         Object lock = new Object();
         synchronized (lock) {

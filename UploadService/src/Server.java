@@ -11,7 +11,7 @@ import java.rmi.registry.Registry;
 
 public class Server implements  Runnable{
 
-    int door = 2014;
+    private int door = 2014;
 
     private String ip = "localhost";
 
@@ -19,6 +19,7 @@ public class Server implements  Runnable{
 
     private String name = "ImageService";
 
+    private String sName = "UploadService";
 
     private Server(int port){
             this.door = port;
@@ -34,18 +35,6 @@ public class Server implements  Runnable{
     public static Server self(){
         return INSTANCE;
     }
-/*My Singelton */
-
-    //Metodo para alterar porta em que o servidor está rodando
-//    public  void changePort(int port) {
-//        if(port != this.door){
-//            this.door = port;
-//            System.out.println(LocalizedStrings.self().newPort()+this.door);
-//        }else{
-//            System.out.println(LocalizedStrings.self());
-//        }
-//    }
-
 
     //Inicia o servidor
     public void init() {
@@ -54,18 +43,16 @@ public class Server implements  Runnable{
     }
 
     public void start() throws Exception {
-        System.out.println("Servidor rodando");
+        System.out.println("Servidor "+this.sName + " Rodando");
 
         System.setProperty("java.rmi.server.hostname", ip);
         System.setProperty("java.security.policy", "java.policy");
 
         System.setSecurityManager(new RMISecurityManager());
 
-        Registry r = LocateRegistry.createRegistry(door);
+        Registry r = LocateRegistry.createRegistry(this.door);
 
-        r.bind(name,new Upload());
-
-        System.out.println("Servidor greg iniciado...");
+        r.bind(sName,new Upload());
 
         Object lock = new Object();
         synchronized (lock) {

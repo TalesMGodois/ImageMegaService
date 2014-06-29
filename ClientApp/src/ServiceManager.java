@@ -11,14 +11,19 @@ import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.HashMap;
 
- public class ServiceManager {
+public class ServiceManager {
     String ip = "localhost";
-    int door = 2014;
+    int door = 2015;
     String name = "ImageService";
+
+    HashMap<String,String> servicesNames = new HashMap<String, String>();
 
 
     private ServiceManager() {
+        servicesNames.put("upload","UploadService");
+        servicesNames.put("download","DownloadService");
     }
 
     private static ServiceManager INSTANCE = new ServiceManager();
@@ -33,16 +38,20 @@ import java.rmi.registry.Registry;
     public void manager(String str) throws RemoteException,NotBoundException {
         System.setProperty("java.security.policy", "java.policy");
         System.setSecurityManager(new RMISecurityManager());
-        Registry r = LocateRegistry.getRegistry(ip, door);
+
 
         String[]  strs = str.split(LocalizedStrings.space());
         if(strs[0].equals(LocalizedStrings.put())){
-            UploadService up = (UploadService) r.lookup(name);
+            door = 2014;
+            Registry r = LocateRegistry.getRegistry(ip, door);
+            UploadService up = (UploadService) r.lookup(servicesNames.get("upload"));
             up.make(strs[1]);
             //doUpload
 //            Upload.self().upload(strs[1]);
         }else if(strs[0].equals(LocalizedStrings.get())){
-            DownloadService down = (DownloadService) r.lookup(name);
+            door = 2016;
+            Registry r = LocateRegistry.getRegistry(ip, door);
+            DownloadService down = (DownloadService) r.lookup(servicesNames.get("download"));
             down.make(strs[1]);
             //doDownload
         }else{

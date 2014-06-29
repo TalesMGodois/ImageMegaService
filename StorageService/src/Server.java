@@ -1,3 +1,5 @@
+import signature.StorageService;
+
 import java.rmi.RMISecurityManager;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -6,86 +8,71 @@ import java.rmi.registry.Registry;
  * Created by tales on 28/06/14.
  */
 
-    import java.rmi.RMISecurityManager;
-    import java.rmi.registry.LocateRegistry;
-    import java.rmi.registry.Registry;
+import java.rmi.RMISecurityManager;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.HashMap;
 
-    public class Server implements  Runnable{
+public class Server implements  Runnable{
+    private String sName = "StorageService";
+    private int door = 2015;
 
-        int door = 2014;
+    private String ip = "localhost";
 
-        private String ip = "localhost";
+    private Server(int port){
+        this.door = port;
 
-        private boolean isRun = false;
-
-        private String name = "ImageService";
-
-
-        private Server(int port){
-            this.door = port;
 //        changePort(port);
-        }
+    }
 
-        /* My Singleton */
-        private Server(){}
-
-
-        private static Server INSTANCE = new Server();
-
-        public static Server self(){
-            return INSTANCE;
-        }
-/*My Singelton */
-
-        //Metodo para alterar porta em que o servidor está rodando
-//    public  void changePort(int port) {
-//        if(port != this.door){
-//            this.door = port;
-//            System.out.println(LocalizedStrings.self().newPort()+this.door);
-//        }else{
-//            System.out.println(LocalizedStrings.self());
-//        }
-//    }
+    /* My Singleton */
+    private Server(){}
 
 
-        //Inicia o servidor
-        public void init() {
-            Thread t = new Thread(Server.INSTANCE);
-            t.start();
-        }
+    private static Server INSTANCE = new Server();
 
-        public void start() throws Exception {
-            System.out.println("Servidor rodando");
+    public static Server self(){
+        return INSTANCE;
+    }
 
-            System.setProperty("java.rmi.server.hostname", ip);
-            System.setProperty("java.security.policy", "java.policy");
+    //Inicia o servidor
+    public void init() {
+        Thread t = new Thread(Server.INSTANCE);
+        t.start();
+    }
 
-            System.setSecurityManager(new RMISecurityManager());
+    public void start() throws Exception {
+        System.out.println("Servidor "+this.sName + " Rodando");
 
-            Registry r = LocateRegistry.createRegistry(door);
+        System.setProperty("java.rmi.server.hostname", ip);
+        System.setProperty("java.security.policy", "java.policy");
 
-            r.bind(name,new Storage());
+        System.setSecurityManager(new RMISecurityManager());
 
-            System.out.println("Servidor iniciado...");
+        Registry r = LocateRegistry.createRegistry(this.door);
 
-            Object lock = new Object();
-            synchronized (lock) {
-                lock.wait();
-            }
-        }
+        r.bind(sName,new Storage());
 
-        //Mata o Servidor
-        public void close() {
+        System.out.println("Servidor iniciado...");
 
-        }
-        //o Proprio server
-        @Override
-        public void run()  {
-            try{
-                start();
-            }catch (Exception e){
-                System.out.println("Não foi possível iniciar o server");
-                e.printStackTrace();
-            }
+        Object lock = new Object();
+        synchronized (lock) {
+            lock.wait();
         }
     }
+
+    //Mata o Servidor
+    public void close() {
+
+    }
+    //o Proprio server
+    @Override
+    public void run()  {
+        try{
+            start();
+        }catch (Exception e){
+            System.out.println("Não foi possível iniciar o server");
+            e.printStackTrace();
+        }
+    }
+}

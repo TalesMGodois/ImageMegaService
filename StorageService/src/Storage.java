@@ -12,13 +12,15 @@ import java.sql.SQLException;
 public class Storage extends UnicastRemoteObject implements StorageService {
     Connection db;
     private static final long serialVersionUID = -8550306338084922644L;
-    protected Storage() throws RemoteException {
+    protected Storage() throws RemoteException, ClassNotFoundException {
         super();
+        Connection con = new ConnectionFactory().getConnection("root","nimk2000");
+
     }
 
     @Override
     public Connection initBdConnection(String door, String name, String ip) {
-
+        System.out.println("iniciando conexao com banco de dados dava");
         String url = "jdbc:postgresql://"+ip +":"+door+"/"+name;
 
         try {
@@ -34,15 +36,14 @@ public class Storage extends UnicastRemoteObject implements StorageService {
             db = DriverManager.getConnection(url, "postgres", "postgres");
             return db;
         } catch (SQLException e) {
-
             e.printStackTrace();
             return null;
         }
     }
 
     @Override
-    public boolean insertImage() {
-
+    public boolean insertImage(byte[] img) {
+        System.out.println(img.toString());
         return false;
     }
 

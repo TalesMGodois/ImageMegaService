@@ -22,6 +22,7 @@ public class Upload extends UnicastRemoteObject implements UploadService {
 
 
     private static final long serialVersionUID = -8550306338084922644L;
+
     private String ip = "localhost";
     private byte[] image;
     private int door;
@@ -46,10 +47,12 @@ public class Upload extends UnicastRemoteObject implements UploadService {
         System.setSecurityManager(new RMISecurityManager());
         Registry r = LocateRegistry.getRegistry(this.ip, 2015);
         StorageService send = (StorageService) r.lookup(servicesNames.get("storage"));
-        send.insertImage(getImage());
+        if(getImage() != null){
+            System.out.println("realizando upload...");
+            boolean b = send.insertImage(getImage());
+            System.out.println(b);
+        }
 //        send.initBdConnection("3000","imageStorage","localhost");
-        System.out.println("Realizar upload");
-
     }
 
     @Override

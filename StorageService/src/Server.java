@@ -11,9 +11,10 @@ import java.rmi.registry.Registry;
 import java.rmi.RMISecurityManager;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.sql.Connection;
 import java.util.HashMap;
 
-public class Server implements  Runnable{
+public class Server {
     private String sName = "StorageService";
     private int door = 2015;
 
@@ -21,13 +22,10 @@ public class Server implements  Runnable{
 
     private Server(int port){
         this.door = port;
-
-//        changePort(port);
     }
 
     /* My Singleton */
     private Server(){}
-
 
     private static Server INSTANCE = new Server();
 
@@ -36,12 +34,12 @@ public class Server implements  Runnable{
     }
 
     //Inicia o servidor
-    public void init() {
-        Thread t = new Thread(Server.INSTANCE);
-        t.start();
-    }
+//    public void init() {
+//        Thread t = new Thread(Server.INSTANCE);
+//        t.start();
+//    }
 
-    public void start() throws Exception {
+    public void start(String userDB,String passwordDB) throws Exception {
         System.out.println("Servidor "+this.sName + " Rodando");
 
         System.setProperty("java.rmi.server.hostname", ip);
@@ -50,8 +48,10 @@ public class Server implements  Runnable{
         System.setSecurityManager(new RMISecurityManager());
 
         Registry r = LocateRegistry.createRegistry(this.door);
+        ConnectionFactory con = new ConnectionFactory();
+        con.getConnection(userDB,passwordDB);
 
-        r.bind(sName,new Storage());
+        r.bind(sName,new Storage(con));
 
         System.out.println("Servidor iniciado...");
 
@@ -66,13 +66,13 @@ public class Server implements  Runnable{
 
     }
     //o Proprio server
-    @Override
-    public void run()  {
-        try{
-            start();
-        }catch (Exception e){
-            System.out.println("Não foi possível iniciar o server");
-            e.printStackTrace();
-        }
-    }
+//    public void run()  {
+//
+////        try{
+////            start();
+////        }catch (Exception e){
+////            System.out.println("Não foi possível iniciar o server");
+////            e.printStackTrace();
+////        }
+//    }
 }

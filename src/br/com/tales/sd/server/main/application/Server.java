@@ -1,6 +1,6 @@
 //package br.com.tales.sd.server.main.application;
 //
-//import br.com.tales.sd.server.main.signature.DownloadService;
+//import signature.DownloadService;
 //import br.com.tales.sd.server.main.signature.UploadService;
 //
 //import javax.swing.*;

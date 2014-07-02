@@ -15,7 +15,7 @@ public interface StorageService extends Remote {
 
     public boolean insertImage(byte[] img) throws RemoteException,AlreadyBoundException,NotBoundException;
 
-    public String getImage() throws RemoteException,AlreadyBoundException,NotBoundException;
+    public byte[] getImage(String name) throws RemoteException,AlreadyBoundException,NotBoundException;
 
     public void closeConnection() throws RemoteException,AlreadyBoundException,NotBoundException;
 

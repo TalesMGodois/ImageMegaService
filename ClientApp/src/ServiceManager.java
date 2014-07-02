@@ -6,6 +6,10 @@
 import signature.DownloadService;
 import signature.UploadService;
 
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
@@ -52,8 +56,26 @@ public class ServiceManager {
             door = 2016;
             Registry r = LocateRegistry.getRegistry(ip, door);
             DownloadService down = (DownloadService) r.lookup(servicesNames.get("download"));
-            down.make(strs[1]);
-            //doDownload
+            byte[] img =down.getImage(strs[1]);
+            try{
+                FileOutputStream fos = new FileOutputStream("/home/tales/Pictures/reset.png");
+
+                fos.write(img) ;
+
+                FileDescriptor fd = fos.getFD();
+
+                fos.flush();
+
+                fd.sync();
+
+                fos.close();
+                System.out.println("Download concluido...");
+            }catch (FileNotFoundException e){
+                e.printStackTrace();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
         }else{
             System.out.println("Comando não reconhecido");
         }

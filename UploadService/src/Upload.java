@@ -50,7 +50,10 @@ public class Upload extends UnicastRemoteObject implements UploadService {
         if(getImage() != null){
             System.out.println("realizando upload...");
             boolean b = send.insertImage(getImage());
-            System.out.println(b);
+            if(b == true)
+                System.out.println("Imagem Carregada com sucesso");
+            else
+                System.out.println("Imagem Não carregada");
         }
 //        send.initBdConnection("3000","imageStorage","localhost");
     }

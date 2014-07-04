@@ -2,8 +2,6 @@
  * Created by tales on 28/06/14.
  */
 
-import signature.DownloadService;
-
 import java.rmi.RMISecurityManager;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;

@@ -6,10 +6,7 @@
 import signature.DownloadService;
 import signature.UploadService;
 
-import java.io.FileDescriptor;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
@@ -57,18 +54,12 @@ public class ServiceManager {
             Registry r = LocateRegistry.getRegistry(ip, door);
             DownloadService down = (DownloadService) r.lookup(servicesNames.get("download"));
             byte[] img =down.getImage(strs[1]);
+            File image = new File("/home/tales/Pictures/"+ strs[1]+".png");
             try{
-                FileOutputStream fos = new FileOutputStream("/home/tales/Pictures/reset.png");
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(image));
+                bos.write(img);
+                bos.close();
 
-                fos.write(img) ;
-
-                FileDescriptor fd = fos.getFD();
-
-                fos.flush();
-
-                fd.sync();
-
-                fos.close();
                 System.out.println("Download concluido...");
             }catch (FileNotFoundException e){
                 e.printStackTrace();

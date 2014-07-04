@@ -1,3 +1,5 @@
+import com.mysql.jdbc.MysqlDataTruncation;
+
 import java.sql.*;
 
 /**
@@ -43,7 +45,7 @@ public class ConnectionFactory {
             ResultSet res = st.executeQuery("SELECT * FROM pictures WHERE name = '" + name + "'");
             res.next();
 //            name = res.getString("name");
-            byte[] binario = res.getBytes("binario");
+            byte[] binario = res.getBytes("image");
             res.close();
             st.close();
             System.out.println("Encontramos imagem");

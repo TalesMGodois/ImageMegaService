@@ -62,17 +62,5 @@ public class Server {
     }
 
     //Mata o Servidor
-    public void close() {
 
-    }
-    //o Proprio server
-//    public void run()  {
-//
-////        try{
-////            start();
-////        }catch (Exception e){
-////            System.out.println("Não foi possível iniciar o server");
-////            e.printStackTrace();
-////        }
-//    }
 }

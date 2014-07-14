@@ -15,13 +15,23 @@ import java.sql.Connection;
 import java.util.HashMap;
 
 public class Server {
-    private String sName = "StorageService";
-    private int door = 2015;
+    private static String sName = "StorageService";
+    private static int door = 2015;
+    private static String type = "partition";
+    private static int id = 1;
+    private static String ip = "localhost";
 
-    private String ip = "localhost";
 
-    private Server(int port){
-        this.door = port;
+    public static String getType() {
+        return type;
+    }
+
+    public static int getId() {
+        return id;
+    }
+
+    public static String getIp() {
+        return ip;
     }
 
     /* My Singleton */
@@ -33,11 +43,13 @@ public class Server {
         return INSTANCE;
     }
 
-    //Inicia o servidor
-//    public void init() {
-//        Thread t = new Thread(Server.INSTANCE);
-//        t.start();
-//    }
+    public static int getDoor(){
+        return door;
+    }
+
+    public static String getName(){
+        return sName;
+    }
 
     public void start(String userDB,String passwordDB) throws Exception {
         System.out.println("Servidor "+this.sName + " Rodando");
@@ -55,12 +67,12 @@ public class Server {
 
         System.out.println("Servidor iniciado...");
 
+        Storage st = new Storage();
+
         Object lock = new Object();
         synchronized (lock) {
             lock.wait();
         }
     }
-
-    //Mata o Servidor
 
 }

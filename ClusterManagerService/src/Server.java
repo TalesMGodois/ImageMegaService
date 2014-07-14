@@ -1,17 +1,14 @@
-/**
- * Created by tales on 28/06/14.
- */
-
-
-import com.sun.webpane.platform.LocalizedStrings;
-
 import java.rmi.RMISecurityManager;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+/**
+ * Created by tales on 14/07/14.
+ */
 public class Server {
 
-    private int door = 2014;
+
+    private int door = 2000;
 
     private String ip = "localhost";
 
@@ -19,11 +16,8 @@ public class Server {
 
     private String name = "ImageService";
 
-    private String sName = "UploadService";
+    private String sName = "ClusterService";
 
-    private Server(int port){
-            this.door = port;
-    }
 
     /* My Singleton */
     private Server(){}
@@ -44,11 +38,12 @@ public class Server {
 
         Registry r = LocateRegistry.createRegistry(this.door);
 
-        r.bind(sName,new Upload());
+        r.bind(sName,new Cluster());
 
         Object lock = new Object();
         synchronized (lock) {
             lock.wait();
         }
     }
+
 }

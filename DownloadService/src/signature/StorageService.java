@@ -1,5 +1,6 @@
 package signature;
 
+
 import java.nio.channels.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -13,7 +14,7 @@ public interface StorageService extends Remote {
 
     public Connection initBdConnection(String door, String name, String ip) throws RemoteException,AlreadyBoundException,NotBoundException;
 
-    public boolean insertImage(byte[] img) throws RemoteException,AlreadyBoundException,NotBoundException;
+    public boolean insertImage(Put put) throws RemoteException,AlreadyBoundException,NotBoundException;
 
     public byte[] getImage(String name) throws RemoteException,AlreadyBoundException,NotBoundException;
 

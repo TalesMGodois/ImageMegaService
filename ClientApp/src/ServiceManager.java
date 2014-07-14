@@ -8,12 +8,17 @@ import signature.UploadService;
 
 import java.io.*;
 import java.net.ConnectException;
+import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.HashMap;
+
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ServiceManager {
     String ip = "localhost";
@@ -37,32 +42,30 @@ public class ServiceManager {
         return INSTANCE;
     }
 
-    public void manager(String str) throws RemoteException,NotBoundException {
+    public void manager(String str) throws RemoteException,NotBoundException,AlreadyBoundException {
         System.setProperty("java.security.policy", "java.policy");
         System.setSecurityManager(new RMISecurityManager());
 
 
+
         String[]  strs = str.split(LocalizedStrings.space());
+
         if(strs[0].equals(LocalizedStrings.put())){
             door = 2014;
             Registry r = LocateRegistry.getRegistry(ip, door);
-            UploadService up = (UploadService) r.lookup(servicesNames.get("upload"));
             try{
-                up.make(strs[1]);
+                UploadService up = (UploadService) r.lookup(servicesNames.get("upload"));
+                 up.make(strs);
             }catch (java.rmi.ConnectException e){
                 System.out.println("Servidor " + servicesNames.get("upload") + " possívelmente fora do ar");
             }
-            //doUpload
-//            Upload.self().upload(strs[1]);
         }else if(strs[0].equals(LocalizedStrings.get())){
             door = 2016;
             Registry r = LocateRegistry.getRegistry(ip, door);
-            DownloadService down = (DownloadService) r.lookup(servicesNames.get("download"));
-
             try{
                 try{
-
-                    byte[] img =down.getImage(strs[1]);
+                    DownloadService down = (DownloadService) r.lookup(servicesNames.get("download"));
+                    byte[] img =down.getImage(strs);
                     File image = new File("/home/tales/Pictures/"+ strs[1]+".png");
                     BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(image));
                     bos.write(img);
@@ -70,6 +73,8 @@ public class ServiceManager {
                     System.out.println("Download concluido...");
                 }catch (java.rmi.ConnectException e){
                     System.out.println("Servidor" + servicesNames.get("download")+" não respondendo");
+                }catch (NullPointerException e){
+                    System.out.println("Imagem não encontrada");
                 }
 
             }catch (FileNotFoundException e){

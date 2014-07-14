@@ -11,8 +11,8 @@ import java.rmi.RemoteException;
 public interface DownloadService extends Remote {
     public String getName() throws RemoteException,AlreadyBoundException,NotBoundException;
 
-    public byte[] getImage(String name) throws RemoteException,AlreadyBoundException,NotBoundException;
+    public byte[] getImage(String[] name) throws RemoteException,AlreadyBoundException,NotBoundException;
 
-    public void make(String str) throws RemoteException,AlreadyBoundException,NotBoundException;
+    public void make(String[] str) throws RemoteException,AlreadyBoundException,NotBoundException;
 
 }

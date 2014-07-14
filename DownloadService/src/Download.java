@@ -27,16 +27,17 @@ public class Download extends UnicastRemoteObject implements DownloadService {
         return null;
     }
 
+
     @Override
-    public byte[] getImage(String name) throws RemoteException, AlreadyBoundException, NotBoundException {
+    public byte[] getImage(String[] name) throws RemoteException, AlreadyBoundException, NotBoundException {
         String serviceName = "StorageService";
         System.setProperty("java.security.policy", "java.policy");
         System.setSecurityManager(new RMISecurityManager());
         Registry r = LocateRegistry.getRegistry(this.ip, 2015);
         StorageService storage = (StorageService) r.lookup(serviceName);
         System.out.println("tentando realizar download");
-        byte[] bt = storage.getImage(name);
-
+        byte[] bt = storage.getImage(name[1]);
+        //Usar calable and pool de threads.
         return bt;
     }
 

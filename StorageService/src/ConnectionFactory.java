@@ -10,7 +10,7 @@ public class ConnectionFactory {
 
     public void getConnection(String user,String password){
         try{
-            System.out.println("REALIZANDO CONEXAO");
+            System.out.println("REALIZANDO CONEXAO...");
             try{
                 Class.forName("com.mysql.jdbc.Driver");
 

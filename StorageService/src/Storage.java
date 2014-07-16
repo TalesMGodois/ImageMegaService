@@ -48,6 +48,11 @@ public class Storage extends UnicastRemoteObject implements StorageService {
     }
 
     @Override
+    public boolean testNode() throws RemoteException, AlreadyBoundException, NotBoundException {
+        return false;
+    }
+
+    @Override
     public void closeConnection() {
 //        Fecha conexao se necessarioi
     }
@@ -60,8 +65,6 @@ public class Storage extends UnicastRemoteObject implements StorageService {
         Registry r = LocateRegistry.getRegistry("localhost",2000);
 
         ClusterService cl = (ClusterService)  r.lookup("ClusterService");
-//        cl.testeCLuster();
-
         cl.addStorage(this.node);
 
         return false;

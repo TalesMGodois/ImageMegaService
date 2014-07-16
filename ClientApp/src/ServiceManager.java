@@ -51,16 +51,22 @@ public class ServiceManager {
         String[]  strs = str.split(LocalizedStrings.space());
 
         if(strs[0].equals(LocalizedStrings.put())){
-            door = 2014;
+            door = 1901;
             Registry r = LocateRegistry.getRegistry(ip, door);
             try{
                 UploadService up = (UploadService) r.lookup(servicesNames.get("upload"));
-                 up.make(strs);
+                boolean isDone = up.make(strs);
+                if(isDone == true){
+                    System.out.println("Imagem Enviada Com Sucesso");
+                }else{
+                    System.out.println("Imagem Não Enviada");
+                }
+
             }catch (java.rmi.ConnectException e){
                 System.out.println("Servidor " + servicesNames.get("upload") + " possívelmente fora do ar");
             }
         }else if(strs[0].equals(LocalizedStrings.get())){
-            door = 2016;
+            door = 1902;
             Registry r = LocateRegistry.getRegistry(ip, door);
             try{
                 try{

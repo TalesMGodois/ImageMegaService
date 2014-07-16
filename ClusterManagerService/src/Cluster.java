@@ -9,7 +9,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by tales on 14/07/14.
@@ -23,14 +22,28 @@ public class Cluster  extends UnicastRemoteObject implements ClusterService  {
 
     private static final long serialVersionUID = -8550306338084922644L;
 
+    public static void removeNode(Node node){
+        if(node.getType().equals("partition")){
+
+            partitions.remove(node);
+        }else if(node.getType().equals("replique")){
+            repliques.remove(node);
+        }else{
+            System.out.println("Nó não válido");
+        }
+    }
+
     protected Cluster() throws RemoteException {
         super();
         repliques = new ArrayList<Node>();
         partitions = new ArrayList<Node>();
         Console console = new Console();
         Thread t = new Thread(console);
-
         t.start();
+
+        SincronizeRepliques s = new SincronizeRepliques();
+        Thread t2 = new Thread(s);
+        t2.start();
 
 
     }
@@ -99,7 +112,18 @@ public class Cluster  extends UnicastRemoteObject implements ClusterService  {
 
     public Node getNode(){
         System.out.println();
-        //Tratar o que for necessario para escolher um nó, tanto a partition e a replica
-        return partitions.get(1);
+
+        if(partitions.size() != 0){
+            if(partitions.size() ==1){
+                return partitions.get(0);
+            }else{
+                return partitions.get(0);
+            }
+        }else{
+            Node node = new Node();
+            return node;
+        }
+
     }
+
 }

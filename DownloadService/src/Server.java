@@ -8,7 +8,7 @@ import java.rmi.registry.Registry;
 
 public class Server {
 
-    private int door = 2016;
+    private int door = 1902;
 
     private String ip = "localhost";
 

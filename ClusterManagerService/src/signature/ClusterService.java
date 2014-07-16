@@ -17,6 +17,8 @@ public interface ClusterService extends Remote {
 
     public boolean createPartiion(String name,String type,String ip,int door) throws RemoteException,AlreadyBoundException,NotBoundException;
 
+    public Node getNode() throws RemoteException,AlreadyBoundException,NotBoundException;
+
     public void addStorage(Node node) throws RemoteException,AlreadyBoundException,NotBoundException;
 
     public void sendup(byte[] img) throws RemoteException,AlreadyBoundException,NotBoundException;

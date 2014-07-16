@@ -12,6 +12,8 @@ public class Server {
 
     private String ip = "localhost";
 
+    private int id = 001;
+
     private boolean isRun = false;
 
     private String name = "ImageService";
@@ -29,8 +31,9 @@ public class Server {
     }
 
     public void start() throws Exception {
-        System.out.println("Servidor "+this.sName + " Rodando");
-
+        System.out.println("CLUSTER "+this.sName+"( "+this.id + ") - Porta: "+ this.door );
+        System.out.println("################# CLUSTER INICIADO ######################");
+        System.out.println("################# AGUARDANDO CONEXÕES######################");
         System.setProperty("java.rmi.server.hostname", ip);
         System.setProperty("java.security.policy", "java.policy");
 
@@ -38,10 +41,13 @@ public class Server {
 
         Registry r = LocateRegistry.createRegistry(this.door);
 
-        r.bind(sName,new Cluster());
+        Cluster cl = new Cluster();
+        r.bind(sName,cl);
 
         Object lock = new Object();
+
         synchronized (lock) {
+            cl.consoleView();
             lock.wait();
         }
     }

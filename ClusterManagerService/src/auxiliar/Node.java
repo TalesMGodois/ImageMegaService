@@ -1,7 +1,6 @@
 package auxiliar;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
 /**
  * Created by tales on 14/07/14.
@@ -20,12 +19,12 @@ public class Node implements Serializable{
 
     public Node(){}
 
-    public void upNode(HashMap<String,String> map){
-        this.id = Integer.parseInt(map.get("id"));
-        this.door = Integer.parseInt(map.get("door"));
-        this.ip = map.get("ip");
-        this.name = map.get("name");
-        this.type = map.get("type");
+    public void upNode(int id,int door,String ip,String name, String type){
+        this.id = id;
+        this.door = door;
+        this.ip = ip;
+        this.name = name;
+        this.type = type;
         this.activated = true;
     }
 
@@ -33,6 +32,25 @@ public class Node implements Serializable{
         this.door= door;
     }
 
+    public String getName(){
+        return this.name;
+    }
+
+    public String getType(){
+        return this.type;
+    }
+
+    public String getIp(){
+        return this.ip;
+    }
+
+    public int getDoor(){
+        return this.door;
+    }
+
+    public boolean isActive(){
+        return this.activated;
+    }
 
     public void deleteNode(){
         this.activated = false;

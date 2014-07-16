@@ -17,7 +17,6 @@ public class Storage extends UnicastRemoteObject implements StorageService {
     ConnectionFactory con;
     private static final long serialVersionUID = -8550306338084922644L;
 
-
     private Node node;
 
     public Storage(ConnectionFactory connection) throws RemoteException, ClassNotFoundException {
@@ -58,11 +57,12 @@ public class Storage extends UnicastRemoteObject implements StorageService {
         String serviceName = "storageService";
         System.setProperty("java.security.policy", "java.policy");
         System.setSecurityManager(new RMISecurityManager());
-        Registry r = LocateRegistry.getRegistry(Server.getIp(),Server.getDoor());
+        Registry r = LocateRegistry.getRegistry("localhost",2000);
 
         ClusterService cl = (ClusterService)  r.lookup("ClusterService");
+//        cl.testeCLuster();
 
-        cl.addStorage(1,this.node);
+        cl.addStorage(this.node);
 
         return false;
     }

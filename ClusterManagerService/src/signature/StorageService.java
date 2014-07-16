@@ -1,7 +1,5 @@
 package signature;
 
-import auxiliar.Node;
-
 import java.nio.channels.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;

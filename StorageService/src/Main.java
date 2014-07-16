@@ -7,5 +7,7 @@ public class Main {
         String password = "nimk2000";
 
         Server.self().start("root","nimk2000");
+
+
     }
 }

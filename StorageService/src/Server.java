@@ -17,9 +17,10 @@ import java.util.HashMap;
 public class Server {
     private static String sName = "StorageService";
     private static int door = 2015;
-    private static String type = "partition";
-    private static int id = 1;
+    private static String type = "replique";
+    private static int id = 0002;
     private static String ip = "localhost";
+    private static boolean activated = false;
 
 
     public static String getType() {
@@ -52,7 +53,8 @@ public class Server {
     }
 
     public void start(String userDB,String passwordDB) throws Exception {
-        System.out.println("Servidor "+this.sName + " Rodando");
+        System.out.println("###############################################################");
+        System.out.println("Servidor " + this.sName + "( " + this.id + ") - Porta: " + this.door);
 
         System.setProperty("java.rmi.server.hostname", ip);
         System.setProperty("java.security.policy", "java.policy");
@@ -63,11 +65,13 @@ public class Server {
         ConnectionFactory con = new ConnectionFactory();
         con.getConnection(userDB,passwordDB);
 
-        r.bind(sName,new Storage(con));
+        Storage st = new Storage(con);
+        r.bind(sName,st);
+
+        boolean b = st.subscribe();
 
         System.out.println("Servidor iniciado...");
 
-        Storage st = new Storage();
 
         Object lock = new Object();
         synchronized (lock) {

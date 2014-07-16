@@ -1,7 +1,6 @@
 package auxiliar;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
 /**
  * Created by tales on 14/07/14.
@@ -33,6 +32,25 @@ public class Node implements Serializable{
         this.door= door;
     }
 
+    public String getName(){
+        return this.name;
+    }
+
+    public String getType(){
+        return this.type;
+    }
+
+    public String getIp(){
+        return this.ip;
+    }
+
+    public int getDoor(){
+        return this.door;
+    }
+
+    public boolean isActive(){
+        return this.activated;
+    }
 
     public void deleteNode(){
         this.activated = false;

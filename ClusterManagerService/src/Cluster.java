@@ -27,6 +27,20 @@ public class Cluster  extends UnicastRemoteObject implements ClusterService  {
         super();
         repliques = new ArrayList<Node>();
         partitions = new ArrayList<Node>();
+        Console console = new Console();
+        Thread t = new Thread(console);
+
+        t.start();
+
+
+    }
+
+    public static ArrayList<Node> getRepliques(){
+        return repliques;
+    }
+
+    public static ArrayList<Node> getPartitions(){
+        return partitions;
     }
 
     @Override
@@ -87,26 +101,5 @@ public class Cluster  extends UnicastRemoteObject implements ClusterService  {
         System.out.println();
         //Tratar o que for necessario para escolher um nó, tanto a partition e a replica
         return partitions.get(1);
-    }
-
-    public void consoleView (){
-
-        if(partitions.size() == 0 && repliques.size() == 0){
-            System.out.println("Sistema não está pronto para uso, Não existem particoes ou replicas");
-        }else{
-            if(partitions.size() != 0){
-                System.out.println("Particões ATIVAS" );
-                for(Node s: partitions){
-                    System.out.println(""+ s.getName()+ ":("+ s.getIp()+ ":"+ s.getDoor()+ ")");
-                }
-            }if(repliques.size() !=0){
-                System.out.println("Replicas ATIVAS:");
-                for(Node s: repliques){
-                    System.out.println( s.getName()+ "("+ s.getIp()+ ":"+ s.getDoor()+ ")");
-                }
-            }
-
-
-        }
     }
 }

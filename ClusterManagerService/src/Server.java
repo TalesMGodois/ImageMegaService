@@ -47,7 +47,6 @@ public class Server {
         Object lock = new Object();
 
         synchronized (lock) {
-            cl.consoleView();
             lock.wait();
         }
     }

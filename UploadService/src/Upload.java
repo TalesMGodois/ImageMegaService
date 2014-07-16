@@ -33,7 +33,7 @@ public class Upload extends UnicastRemoteObject implements UploadService {
     public void make(String img[]) throws RemoteException, java.rmi.AlreadyBoundException, NotBoundException {
         Put put;
         try{
-            put = new Put(img[2],img[3]);
+            put = new Put(img[1],img[2]);
             put.setImage(put.getAddr());
 
             if(put.getImage() != null){

@@ -1,3 +1,4 @@
+import auxiliar.Node;
 import auxiliar.Put;
 import signature.StorageService;
 import signature.UploadSlaveSig;
@@ -59,10 +60,12 @@ public class UploadSlave implements Runnable, UploadSlaveSig {
         String serviceName = "storageService";
         System.setProperty("java.security.policy", "java.policy");
         System.setSecurityManager(new RMISecurityManager());
-        Registry r = LocateRegistry.getRegistry(this.ip, this.door);
 
+        Registry r = LocateRegistry.getRegistry(this.ip, this.door);
         ClusterService cl = (ClusterService)  r.lookup("ClusterService");
 
+        String sl = cl.testeCLuster();
+        System.out.println(sl);
         StorageService send = (StorageService) r.lookup("StorageService");
         System.out.println("realizando upload...");
         if(put.getImage() != null){
@@ -82,7 +85,5 @@ public class UploadSlave implements Runnable, UploadSlaveSig {
             System.out.println("Não existe imagem");
             return false;
         }
-
     }
-
 }

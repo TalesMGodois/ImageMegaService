@@ -1,3 +1,4 @@
+import auxiliar.Put;
 import com.mysql.jdbc.MysqlDataTruncation;
 
 import java.sql.*;
@@ -24,16 +25,42 @@ public class ConnectionFactory {
         }
     }
 
-    public boolean insert(String name,byte[] bin){
-        try {
-            PreparedStatement ps = this.con.prepareStatement("INSERT INTO pictures (name, image) VALUES (?,?)");
-            ps.setString(1, name);
-            ps.setBytes(2, bin);
-            int cont = ps.executeUpdate();
-            ps.close();
-            return true;
-        } catch (SQLException e) {
+    public boolean find(String name){
+        try{
+            Statement st = con.createStatement();
+            ResultSet res = st.executeQuery("SELECT name FROM pictures WHERE name = '" + name + "'");
+            res.next();
+
+
+            if(res.getBytes("name") == null){
+                return false;
+            }else{
+                return true;
+            }
+
+        }catch (Exception e){
             e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public boolean insert(String name,byte[] bin){
+        boolean isUseless = !(find(name));
+
+        if(isUseless == true){
+            try {
+                PreparedStatement ps = this.con.prepareStatement("INSERT INTO pictures (name, image) VALUES (?,?)");
+                ps.setString(1, name);
+                ps.setBytes(2, bin);
+                int cont = ps.executeUpdate();
+                ps.close();
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }else{
             return false;
         }
     }

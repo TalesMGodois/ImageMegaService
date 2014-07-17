@@ -42,34 +42,34 @@ public class UploadSlave implements Callable<Boolean>, UploadSlaveSig {
         String serviceName = "storageService";
         System.setProperty("java.security.policy", "java.policy");
         System.setSecurityManager(new RMISecurityManager());
-
-        Registry r = LocateRegistry.getRegistry("localhost", 2000);
-        ClusterService cl = (ClusterService)  r.lookup("ClusterService");
-        try{
-            return true;
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-//        StorageService send = (StorageService) r.lookup("StorageService");
-//        System.out.println("realizando upload...");
-//        if(put.getImage() != null){
 //
-//            boolean b = send.insertImage(put.getImage(),put.getName());
-//
-//            if(b == true){
-//
-//                System.out.println("Imagem Carregada com sucesso");
-//                return true;
-//            }
-//            else{
-//                System.out.println("Imagem Não carregada");
-//                return false;
-//            }
-//        }else{
-//            System.out.println("Não existe imagem");
+        Registry r = LocateRegistry.getRegistry("localhost", 9003);
+//        ClusterService cl = (ClusterService)  r.lookup("ClusterService");
+//        try{
+//            return true;
+//        }catch (Exception e){
+//            e.printStackTrace();
 //            return false;
 //        }
+        StorageService send = (StorageService) r.lookup("StorageService");
+        System.out.println("realizando upload...");
+        if(put.getImage() != null){
+
+            boolean b = send.insertImage(put.getImage(),put.getName());
+
+            if(b == true){
+
+                System.out.println("Imagem Carregada com sucesso");
+                return true;
+            }
+            else{
+                System.out.println("Imagem Não carregada");
+                return false;
+            }
+        }else{
+            System.out.println("Não existe imagem");
+            return false;
+        }
     }
 
     @Override

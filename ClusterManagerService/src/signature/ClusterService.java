@@ -13,10 +13,6 @@ import auxiliar.Node;
 public interface ClusterService extends Remote {
     public boolean testNode(Node node) throws RemoteException,AlreadyBoundException,NotBoundException;
 
-    public String testeCLuster() throws RemoteException,AlreadyBoundException,NotBoundException;
-
-    public boolean createPartiion(String name,String type,String ip,int door) throws RemoteException,AlreadyBoundException,NotBoundException;
-
     public Node getNode() throws RemoteException,AlreadyBoundException,NotBoundException;
 
     public void addStorage(Node node) throws RemoteException,AlreadyBoundException,NotBoundException;

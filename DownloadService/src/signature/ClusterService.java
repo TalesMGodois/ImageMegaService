@@ -13,8 +13,12 @@ import java.rmi.RemoteException;
 public interface ClusterService extends Remote {
     public boolean testNode(Node node) throws RemoteException,AlreadyBoundException,NotBoundException;
 
-    public String testCluster() throws RemoteException,AlreadyBoundException,NotBoundException;
+    public Node getNode() throws RemoteException,AlreadyBoundException,NotBoundException;
 
     public void addStorage(Node node) throws RemoteException,AlreadyBoundException,NotBoundException;
+
+    public void sendup(byte[] img) throws RemoteException,AlreadyBoundException,NotBoundException;
+
+
 
 }

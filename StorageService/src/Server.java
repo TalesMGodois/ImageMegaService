@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class Server {
     private static String sName = "StorageService";
-    private static int door = 9003;
+    private static int door = 9002;
     private static String type = "partition";
     private static int id = 0002;
     private static String ip = "localhost";

@@ -28,8 +28,6 @@ public class Storage extends UnicastRemoteObject implements StorageService {
 
     @Override
     public boolean insertImage(byte[] img, String name) throws RemoteException,AlreadyBoundException,NotBoundException{
-        System.out.println(img.toString());
-
         if(this.con.insert(name,img)){
             return true;
         }else return false;

@@ -42,7 +42,6 @@ public class Put implements Serializable{
             System.out.println("Imagem não encontrada");
         }
     }
-
     public byte[] getImage(){
         return  this.image;
     }

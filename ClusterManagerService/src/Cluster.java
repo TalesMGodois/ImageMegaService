@@ -1,3 +1,4 @@
+import auxiliar.HashTableRoute;
 import auxiliar.Node;
 import signature.ClusterService;
 import signature.StorageService;
@@ -19,12 +20,13 @@ public class Cluster  extends UnicastRemoteObject implements ClusterService  {
     private static ArrayList<Node> partitions;
     private Node activeR;
     private Node acttiveP;
+    private HashTableRoute hst;
 
     private static final long serialVersionUID = -8550306338084922644L;
 
     public static void removeNode(Node node){
-        if(node.getType().equals("partition")){
 
+        if(node.getType().equals("partition")){
             partitions.remove(node);
         }else if(node.getType().equals("replique")){
             repliques.remove(node);
@@ -35,6 +37,8 @@ public class Cluster  extends UnicastRemoteObject implements ClusterService  {
 
     protected Cluster() throws RemoteException {
         super();
+        //Definir protocolo de cluster como 3 storages particionados
+        this.hst = new HashTableRoute(3);
         repliques = new ArrayList<Node>();
         partitions = new ArrayList<Node>();
         Console console = new Console();
@@ -99,19 +103,16 @@ public class Cluster  extends UnicastRemoteObject implements ClusterService  {
 
     }
 
-    public Node getNode(){
+    public Node getNode(String imgName){
         System.out.println("ESCOLHER NÓ");
         System.out.println("Numero de Particões");
-        if(partitions.size() != 0){
-            if(partitions.size() ==1){
-                System.out.println("Jogar na particao inicial");
-                return partitions.get(0);
-            }else{
-                return partitions.get(0);
-            }
-        }else{
-            System.out.println("Não existem nós para realizar o upload");
+        if(partitions.size() != hst.getSize()){
+            System.out.println("Voce ainda não tem a quantidade de Particoes Estabelecidas");
             return null;
+        }else{
+            int key = hst.createKey(imgName);
+            int indice = hst.hashFunction(key);
+            return partitions.get(indice);
         }
 
     }

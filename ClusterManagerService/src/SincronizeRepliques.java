@@ -34,7 +34,6 @@ public class SincronizeRepliques implements Runnable {
                     StorageService sv = (StorageService)  r.lookup("StorageService");
                     System.out.println("Storage (//"+s.getIp()+":"+s.getDoor()+ ") Está OK");
                 }catch (Exception e){
-//                    e.printStackTrace();
                     Cluster.removeNode(s);
                     System.out.println("#######Falha ao conectar neste nó");
                     System.out.println("REMOVENDO STORAGE (//" + s.getIp() + ":" + s.getDoor()+ ")");
@@ -46,6 +45,7 @@ public class SincronizeRepliques implements Runnable {
             Thread.sleep(2000);
             testNode();
         }catch (Exception e){
+            System.out.println("Erro");
             e.printStackTrace();
         }
     }

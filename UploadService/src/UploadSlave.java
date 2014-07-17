@@ -47,7 +47,7 @@ public class UploadSlave implements Callable<Boolean>, UploadSlaveSig {
         try{
             Registry r = LocateRegistry.getRegistry("localhost", 2000);
             ClusterService cl = (ClusterService)  r.lookup("ClusterService");
-            Node nd = cl.getNode();
+            Node nd = cl.getNode(put.getName());
             if(nd != null ){
                 Registry l = LocateRegistry.getRegistry(nd.getIp(),nd.getDoor());
                 StorageService send = (StorageService) l.lookup("StorageService");

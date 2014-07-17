@@ -69,17 +69,6 @@ public class Cluster  extends UnicastRemoteObject implements ClusterService  {
     }
 
     @Override
-    public String testeCLuster() throws RemoteException, AlreadyBoundException, NotBoundException {
-        System.out.println("teste aceito");
-        return "TESTE ACEITO";
-    }
-
-    @Override
-    public boolean createPartiion(String name, String type, String ip, int door) {
-        return false;
-    }
-
-    @Override
     public void addStorage(Node node) {
         if(node.getType().equals("replique")){
             repliques.add(node);
@@ -111,17 +100,18 @@ public class Cluster  extends UnicastRemoteObject implements ClusterService  {
     }
 
     public Node getNode(){
-        System.out.println();
-
+        System.out.println("ESCOLHER NÓ");
+        System.out.println("Numero de Particões");
         if(partitions.size() != 0){
             if(partitions.size() ==1){
+                System.out.println("Jogar na particao inicial");
                 return partitions.get(0);
             }else{
                 return partitions.get(0);
             }
         }else{
-            Node node = new Node();
-            return node;
+            System.out.println("Não existem nós para realizar o upload");
+            return null;
         }
 
     }

@@ -29,13 +29,14 @@ public class ConnectionFactory {
         try{
             Statement st = con.createStatement();
             ResultSet res = st.executeQuery("SELECT name FROM pictures WHERE name = '" + name + "'");
-            res.next();
-
-
-            if(res.getBytes("name") == null){
-                return false;
+            if(res.next()){
+                if(res.getBytes("name").equals(null)){
+                    return false;
+                }else{
+                    return true;
+                }
             }else{
-                return true;
+                return false;
             }
 
         }catch (Exception e){
@@ -55,6 +56,7 @@ public class ConnectionFactory {
                 ps.setBytes(2, bin);
                 int cont = ps.executeUpdate();
                 ps.close();
+                System.out.println("Imagem:" + bin.toString());
                 return true;
             } catch (SQLException e) {
                 e.printStackTrace();

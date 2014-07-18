@@ -3,8 +3,6 @@
  */
 
 
-import com.sun.webpane.platform.LocalizedStrings;
-
 import java.rmi.RMISecurityManager;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;

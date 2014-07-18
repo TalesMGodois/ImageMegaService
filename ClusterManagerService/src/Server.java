@@ -1,3 +1,4 @@
+import java.net.InetAddress;
 import java.rmi.RMISecurityManager;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -31,6 +32,7 @@ public class Server {
     }
 
     public void start() throws Exception {
+
         System.out.println("CLUSTER "+this.sName+"( "+this.id + ") - Porta: "+ this.door );
         System.out.println("################# CLUSTER INICIADO ######################");
         System.out.println("################# AGUARDANDO CONEXÕES######################");

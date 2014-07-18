@@ -1,5 +1,6 @@
 import signature.StorageService;
 
+import java.net.InetAddress;
 import java.rmi.RMISecurityManager;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -52,7 +53,22 @@ public class Server {
         return sName;
     }
 
+    public void start(String userDB,String passwordDB, int door) throws Exception{
+        this.door = door;
+        start(userDB,passwordDB);
+    }
+
     public void start(String userDB,String passwordDB) throws Exception {
+
+        try{
+            this.ip = InetAddress.getLocalHost().getHostAddress();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+
         System.out.println("###############################################################");
         System.out.println("Servidor ("+this.type+")"+ this.sName + "(" + this.id + ") - Porta: " + this.door);
 

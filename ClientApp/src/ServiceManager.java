@@ -3,6 +3,7 @@
  * package br.com.tales.sd.client;
  **/
 
+import auxiliar.Put;
 import signature.DownloadService;
 import signature.UploadService;
 
@@ -49,13 +50,16 @@ public class ServiceManager {
 
 
         String[]  strs = str.split(LocalizedStrings.space());
-
+//        ip = "200.137.220.68";
         if(strs[0].equals(LocalizedStrings.put())){
             door = 1901;
+
             Registry r = LocateRegistry.getRegistry(ip, door);
             try{
                 UploadService up = (UploadService) r.lookup(servicesNames.get("upload"));
-                boolean isDone = up.make(strs);
+                Put put = new Put(strs[1],strs[2]);
+                put.setImage(put.getAddr());
+                boolean isDone = up.make(put);
                 if(isDone == true){
                     System.out.println("Imagem Enviada Com Sucesso");
                 }else{

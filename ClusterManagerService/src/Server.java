@@ -33,7 +33,14 @@ public class Server {
 
     public void start() throws Exception {
 
-        System.out.println("CLUSTER "+this.sName+"( "+this.id + ") - Porta: "+ this.door );
+        try{
+            this.ip = InetAddress.getLocalHost().getHostAddress();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        System.out.println("CLUSTER "+this.sName+"( "+this.ip +":"+this.door);
         System.out.println("################# CLUSTER INICIADO ######################");
         System.out.println("################# AGUARDANDO CONEXÕES######################");
         System.setProperty("java.rmi.server.hostname", ip);

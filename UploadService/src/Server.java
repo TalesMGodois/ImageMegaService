@@ -3,6 +3,7 @@
  */
 
 
+import java.net.InetAddress;
 import java.rmi.RMISecurityManager;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -33,7 +34,14 @@ public class Server {
     }
 
     public void start() throws Exception {
-        System.out.println("Servidor "+this.sName + " Rodando");
+        try{
+            this.ip = InetAddress.getLocalHost().getHostAddress();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        System.out.println("Servidor "+this.sName + " Rodando("+this.ip+":"+this.door+")");
 
         System.setProperty("java.rmi.server.hostname", ip);
         System.setProperty("java.security.policy", "java.policy");

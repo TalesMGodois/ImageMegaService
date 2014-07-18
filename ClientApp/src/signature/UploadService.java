@@ -1,5 +1,7 @@
 package signature;
 
+import auxiliar.Put;
+
 import java.nio.channels.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -12,6 +14,6 @@ public interface UploadService extends Remote {
 
     public String getName() throws RemoteException,AlreadyBoundException,NotBoundException;
 
-    public boolean make(String[] name) throws RemoteException, AlreadyBoundException, NotBoundException, java.rmi.AlreadyBoundException;
+    public boolean make(Put put) throws RemoteException, NotBoundException, java.rmi.AlreadyBoundException;
 
 }

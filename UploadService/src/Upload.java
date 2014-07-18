@@ -40,10 +40,10 @@ public class Upload extends UnicastRemoteObject implements UploadService {
     }
 
     @Override
-    public boolean make(String img[]) throws RemoteException, java.rmi.AlreadyBoundException, NotBoundException {
+    public boolean make(Put put) throws RemoteException, java.rmi.AlreadyBoundException, NotBoundException {
         try{
             ExecutorService tpes = Executors.newCachedThreadPool();
-            UploadSlave ups = new UploadSlave(img);
+            UploadSlave ups = new UploadSlave(put);
             int upId = ups.getId();
             uploads[upId] = ups;
             futures[upId] = tpes.submit(uploads[upId]);

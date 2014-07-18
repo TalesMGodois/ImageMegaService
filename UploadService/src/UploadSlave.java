@@ -23,11 +23,9 @@ public class UploadSlave implements Callable<Boolean>, UploadSlaveSig {
 
     private Put put;
 
-    public UploadSlave(String addrImg[]){
+    public UploadSlave(Put put){
         works = works + 1;
         this.id = works;
-        Put put = new Put(addrImg[1],addrImg[2]);
-        put.setImage(put.getAddr());
         this.put = put;
     }
 

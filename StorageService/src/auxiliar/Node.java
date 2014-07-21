@@ -11,6 +11,7 @@ public class Node implements Serializable{
     private String ip;
     private String name;
     private boolean activated;
+    private int numberOfActions;
 
     private static final long serialVersionUID = 2806421523585360625L;
 
@@ -36,6 +37,8 @@ public class Node implements Serializable{
         return this.name;
     }
 
+
+
     public String getType(){
         return this.type;
     }
@@ -46,6 +49,13 @@ public class Node implements Serializable{
 
     public int getDoor(){
         return this.door;
+    }
+
+    public void setNumberOfActions(int number){
+        this.numberOfActions = number;
+    }
+    public int getNumberOfActions(){
+        return this.numberOfActions;
     }
 
     public boolean isActive(){

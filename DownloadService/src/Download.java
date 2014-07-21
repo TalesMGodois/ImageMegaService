@@ -1,3 +1,5 @@
+import auxiliar.Node;
+import signature.ClusterService;
 import signature.DownloadService;
 import signature.StorageService;
 
@@ -29,15 +31,21 @@ public class Download extends UnicastRemoteObject implements DownloadService {
 
 
     @Override
-    public byte[] getImage(String[] name) throws RemoteException, AlreadyBoundException, NotBoundException {
+    public byte[] getImage(String name) throws RemoteException, AlreadyBoundException,NotBoundException  {
         String serviceName = "StorageService";
         System.setProperty("java.security.policy", "java.policy");
-        System.setSecurityManager(new RMISecurityManager());
-        Registry r = LocateRegistry.getRegistry(this.ip, 2015);
-        StorageService storage = (StorageService) r.lookup(serviceName);
+        Registry r = LocateRegistry.getRegistry("127.0.1.1", 2000);
+        ClusterService cl = (ClusterService)  r.lookup("ClusterService");
+        Node nd = cl.getNode(name);
         System.out.println("tentando realizar download");
-        byte[] bt = storage.getImage(name[1]);
-        //Usar calable and pool de threads.
+        Registry p = LocateRegistry.getRegistry(nd.getIp(), nd.getDoor());
+        StorageService storage = (StorageService) p.lookup(serviceName);
+        byte[] bt = storage.getImage(name);
+        if(bt != null){
+            System.out.println("Imagem Encontrada");
+        }else{
+            System.out.println("Imagem Não encontrada");
+        }
         return bt;
     }
 

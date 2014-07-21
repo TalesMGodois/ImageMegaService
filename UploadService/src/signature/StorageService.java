@@ -1,5 +1,7 @@
 package signature;
 
+import auxiliar.Node;
+
 import java.nio.channels.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -14,7 +16,7 @@ public interface StorageService extends Remote {
 
     public byte[] getImage(String name) throws RemoteException,AlreadyBoundException,NotBoundException;
 
-    public boolean testNode() throws RemoteException,AlreadyBoundException,NotBoundException;
+    public Node getNode() throws RemoteException,AlreadyBoundException,NotBoundException;
 
     public void closeConnection() throws RemoteException,AlreadyBoundException,NotBoundException;
 

@@ -23,9 +23,9 @@ public class UploadSlave implements Callable<Boolean>, UploadSlaveSig {
 
     private Put put;
 
-    public UploadSlave(Put put){
+    public UploadSlave(Put put,int id){
         works = works + 1;
-        this.id = works;
+        this.id = id;
         this.put = put;
     }
 
@@ -58,24 +58,30 @@ public class UploadSlave implements Callable<Boolean>, UploadSlaveSig {
                     if(b == true){
 
                         System.out.println("Imagem Carregada com sucesso");
+                        Upload.removeNode(this);
                         return true;
                     }
                     else{
                         System.out.println("Imagem Não carregada");
+                        Upload.removeNode(this);
                         return false;
                     }
                 }else{
                     System.out.println("Não existe imagem");
+                    Upload.removeNode(this);
                     return false;
                 }
             }else{
                 System.out.println("Não existe nó válido");
+                Upload.removeNode(this);
                 return false;
             }
         }catch (Exception e){
+            Upload.removeNode(this);
             e.printStackTrace();
             return false;
         }
+
     }
 
     @Override

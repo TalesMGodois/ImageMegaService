@@ -25,6 +25,7 @@ public class SincronizeRepliques implements Runnable {
         System.setProperty("java.security.policy", "java.policy");
         System.setSecurityManager(new RMISecurityManager());
         System.out.println(Cluster.getPartitions().size());
+
         if(Cluster.getPartitions().size() == 0){
             System.out.println("############## NÃO EXISTEM PARTICOES ATIVAS ###############");
         }else{
@@ -32,7 +33,11 @@ public class SincronizeRepliques implements Runnable {
                 try{
                     Registry r = LocateRegistry.getRegistry(s.getIp(), s.getDoor());
                     StorageService sv = (StorageService)  r.lookup("StorageService");
-                    System.out.println("Storage (//"+s.getIp()+":"+s.getDoor()+ ") Está OK");
+
+                    Node n = sv.getNode();
+                    Cluster.getPartitions().remove(s);
+                    Cluster.getPartitions().add(n);
+                    System.out.println("Storage (//"+n.getIp()+":"+n.getDoor()+":["+n.getNumberOfActions()+ "]) Está OK");
                 }catch (Exception e){
                     Cluster.removeNode(s);
                     System.out.println("#######Falha ao conectar neste nó");

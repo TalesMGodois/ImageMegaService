@@ -106,13 +106,16 @@ public class Cluster  extends UnicastRemoteObject implements ClusterService  {
     public Node getNode(String imgName){
         System.out.println("ESCOLHER NÓ");
         System.out.println("Numero de Particões");
-        if(partitions.size() != hst.getSize()){
-            System.out.println("Voce ainda não tem a quantidade de Particoes Estabelecidas");
-            return null;
-        }else{
+
+        if(partitions.size() == 1 ){
+            return partitions.get(0);
+        }else if(partitions.size() == hst.getSize()){
             int key = hst.createKey(imgName);
             int indice = hst.hashFunction(key);
             return partitions.get(indice);
+        }else{
+            System.out.println("Voce ainda não tem a quantidade de Particoes Estabelecidas");
+            return null;
         }
 
     }

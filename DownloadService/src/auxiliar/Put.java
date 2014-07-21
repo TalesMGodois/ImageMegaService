@@ -25,27 +25,6 @@ public class Put implements Serializable{
         this.addr = addr;
     }
 
-    public Put(File file){
-        this.name = file.getName();
-        setImage(file.getAbsolutePath());
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAddr(String addr) {
-        this.addr = addr;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    public void setImages(List<Byte[]> images) {
-        this.images = images;
-    }
-
     public String getName(){
         return this.name;
     }
@@ -53,8 +32,6 @@ public class Put implements Serializable{
     public String getAddr(){
         return this.addr;
     }
-
-
 
     public void setImage(String addrImage){
         try{
@@ -66,6 +43,10 @@ public class Put implements Serializable{
         }catch (IOException e){
             System.out.println("Imagem não encontrada");
         }
+    }
+
+    public byte[] getImage(){
+        return  this.image;
     }
 
 }

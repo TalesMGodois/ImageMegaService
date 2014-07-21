@@ -8,18 +8,14 @@ import signature.DownloadService;
 import signature.UploadService;
 
 import java.io.*;
-import java.net.ConnectException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
 import java.util.HashMap;
-
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ServiceManager {
     String ip = "localhost";
@@ -43,39 +39,74 @@ public class ServiceManager {
         return INSTANCE;
     }
 
+    public ArrayList<File> listaImagens(File path) {
+
+        ArrayList<File> listImagens = new ArrayList();
+        File[] files = path.listFiles();
+        for(File file : files ){
+            listImagens.add(file);;
+        }
+        return listImagens;
+    }
+
+    public void sendFile(File file) throws RemoteException,NotBoundException,AlreadyBoundException{
+        ip = "127.0.1.1";
+        door = 1901;
+        Put put = new Put(file);
+        if(put.getName() != null){
+            Registry r = LocateRegistry.getRegistry(ip, door);
+            UploadService up = (UploadService) r.lookup(servicesNames.get("upload"));
+            boolean isDone = up.make(put);
+            if(isDone == true){
+                System.out.println("Imagem Enviada Com Sucesso");
+            }else{
+                System.out.println("Imagem não pode ser enviada, provavel que o servidor esteja fora do ar ou o nome ja exista");
+            }
+        }else{
+            System.out.println("Imagem não pode ser enviada sem nome");
+        }
+
+
+    }
+
+    public File getFile(String name){
+        return null;
+    }
+
+
+    public void getFile(){
+
+    }
+
     public void manager(String str) throws RemoteException,NotBoundException,AlreadyBoundException {
         System.setProperty("java.security.policy", "java.policy");
         System.setSecurityManager(new RMISecurityManager());
 
-
-
         String[]  strs = str.split(LocalizedStrings.space());
 //        ip = "200.137.220.68";
         if(strs[0].equals(LocalizedStrings.put())){
-            door = 1901;
+            File file = new File(strs[1]);
+            ArrayList<File> files = ServiceManager.self().listaImagens(file);
 
-            Registry r = LocateRegistry.getRegistry(ip, door);
-            try{
-                UploadService up = (UploadService) r.lookup(servicesNames.get("upload"));
-                Put put = new Put(strs[1],strs[2]);
-                put.setImage(put.getAddr());
-                boolean isDone = up.make(put);
-                if(isDone == true){
-                    System.out.println("Imagem Enviada Com Sucesso");
-                }else{
-                    System.out.println("Imagem Não Enviada");
+            try {
+                for (int i = 0; i < files.size(); i++) {
+                    System.out.println("Criando arquivos e Threads");
+                    SendImage ti = new SendImage(files.get(i));
+                    Thread t = new Thread(ti);
+                    t.start();
                 }
 
-            }catch (java.rmi.ConnectException e){
-                System.out.println("Servidor " + servicesNames.get("upload") + " possívelmente fora do ar");
+            }catch (ArrayIndexOutOfBoundsException e){
+                System.out.println("Imagem não pode ser enviada sem nome");
             }
         }else if(strs[0].equals(LocalizedStrings.get())){
             door = 1902;
+            ip = "127.0.1.1";
             Registry r = LocateRegistry.getRegistry(ip, door);
             try{
                 try{
                     DownloadService down = (DownloadService) r.lookup(servicesNames.get("download"));
-                    byte[] img =down.getImage(strs);
+                    byte[] img =down.getImage(strs[1]);
                     File image = new File("/home/tales/Pictures/"+ strs[1]+".png");
                     BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(image));
                     bos.write(img);

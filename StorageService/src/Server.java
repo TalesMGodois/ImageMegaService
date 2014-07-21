@@ -67,8 +67,6 @@ public class Server {
             e.printStackTrace();
         }
 
-
-
         System.out.println("###############################################################");
         System.out.println("Servidor ("+this.type+")"+ this.sName + "(" + this.id + ") - Porta: " + this.door);
 

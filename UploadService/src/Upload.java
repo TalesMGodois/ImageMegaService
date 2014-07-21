@@ -5,6 +5,8 @@ import java.nio.channels.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.Queue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,7 +21,7 @@ public class Upload extends UnicastRemoteObject implements UploadService {
 
     private static Future<Boolean> futures[];
 
-    private static UploadSlave uploads[];
+    private static ArrayList<UploadSlave> uploads;
 
     private String ip = "localhost";
 
@@ -30,7 +32,7 @@ public class Upload extends UnicastRemoteObject implements UploadService {
 
     public Upload() throws RemoteException, AlreadyBoundException{
         super();
-        uploads     = new UploadSlave[this.maxPool];
+        uploads     = new ArrayList<UploadSlave>();
         futures     = new Future[maxPool];
     }
 
@@ -39,19 +41,30 @@ public class Upload extends UnicastRemoteObject implements UploadService {
         return null;
     }
 
+    public static void removeNode(UploadSlave up){
+        try{
+            uploads.remove(up);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public boolean make(Put put) throws RemoteException, java.rmi.AlreadyBoundException, NotBoundException {
-        try{
-            ExecutorService tpes = Executors.newCachedThreadPool();
-            UploadSlave ups = new UploadSlave(put);
-            int upId = ups.getId();
-            uploads[upId] = ups;
-            futures[upId] = tpes.submit(uploads[upId]);
-            try{
 
-                boolean b = futures[upId].get();
-                return  b;
-            }catch (InterruptedException e) {
+        ExecutorService tpes = Executors.newCachedThreadPool();
+
+        if (uploads.size() <= maxPool) {
+            System.out.println("Criar thread de upload");
+            UploadSlave ups = new UploadSlave(put,uploads.size());
+            uploads.add(ups);
+            futures[ups.getId()] = tpes.submit(uploads.get(ups.getId()));
+            try {
+                boolean b = futures[ups.getId()].get();
+
+                return b;
+            } catch (InterruptedException e) {
                 e.printStackTrace();
                 return false;
             } catch (ExecutionException e) {
@@ -59,10 +72,9 @@ public class Upload extends UnicastRemoteObject implements UploadService {
                 return false;
             }
 
-        }catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("Imagem não pode ser enviada sem nome");
+
+        }else{
             return false;
         }
-
     }
 }

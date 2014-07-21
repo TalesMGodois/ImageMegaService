@@ -24,6 +24,4 @@ public interface StorageService extends Remote {
     public boolean subscribe() throws RemoteException,AlreadyBoundException,NotBoundException;
 
 
-
-
 }

@@ -62,7 +62,6 @@ public class Cluster  extends UnicastRemoteObject implements ClusterService  {
 
     @Override
     public boolean testNode(Node node) throws RemoteException, AlreadyBoundException, NotBoundException {
-        boolean test = repliques.contains(node);
         try{
             Registry r = LocateRegistry.getRegistry(node.getIp(), node.getDoor());
             StorageService ss = (StorageService)  r.lookup("StorageService");
